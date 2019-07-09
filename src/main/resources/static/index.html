@@ -1,0 +1,51 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="index.css"/>
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+        <script src="index.js"></script>
+    </head>
+    <body>
+        <product>
+            <p>Feeling sad? Buy a Happy Emoji!!!</p>
+            <p style="font-size:100px">&#128518;</p>
+            <p>For only $10 I will send you a Happy Emoji with blinking eyes</p>
+            <br/>
+            <script src="https://www.paypal.com/sdk/js?client-id=ARDuG4r2GSX0WlMznzB80V5YGEsc3sVnmU0amHMzHEs5w3san7LjVX0eduvSa4N38M6agehAnrcVvf2X"></script>
+            <div id="paypal-button-container"></div>
+
+            <script>
+// Render the PayPal button into #paypal-button-container
+paypal.Buttons({
+
+// Set up the transaction
+createOrder: function(data, actions) {
+    return fetch('/checkout/createOrder', {
+        method: 'post',
+        headers: {
+            'content-type': 'application/json'
+        }
+    }).then(function(res) {
+        return res.json();
+    }).then(function(data) {
+        return data.id;
+    });
+},
+
+// Finalize the transaction
+onApprove: function(data, actions) {
+    return fetch('/checkout/order/' + data.orderID, {
+        method: 'get'
+    }).then(function(res) {
+        return res.json();
+    }).then(function(details) {
+        // Show a success message to the buyer
+        alert('Transaction completed by ' + details.payer.name.given_name + '!');
+    });
+}
+
+
+}).render('#paypal-button-container');
+            </script>
+        </product>
+    </body>
+</html>
