@@ -39,7 +39,8 @@ onApprove: function(data, actions) {
         return res.json();
     }).then(function(details) {
         // Show a success message to the buyer
-        alert('Transaction completed by ' + details.payer.name.given_name + '!');
+        alert('Thank you!!! Transaction completed by ' + details.payer.name.given_name + '!\n' 
+        + 'ORDER NUMBER ' + details.id + '\n');
     });
 }
 
